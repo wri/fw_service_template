@@ -29,11 +29,11 @@ variable "desired_count" {
 }
 variable "fargate_cpu" {
   type    = number
-  default = 512
+  default = 256
 }
 variable "fargate_memory" {
   type    = number
-  default = 2048
+  default = 512
 }
 variable "auto_scaling_cooldown" {
   type    = number
@@ -48,11 +48,6 @@ variable "auto_scaling_max_cpu_util" {
 }
 variable "auto_scaling_min_capacity" {
   type = number
-}
-
-variable "key_pair" {
-  type    = string
-  default = "tmaschler_gfw"
 }
 
 variable "git_sha" {
