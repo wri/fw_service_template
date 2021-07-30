@@ -24,6 +24,7 @@ module "lb_listener_rule" {
   listener_arn = data.terraform_remote_state.fw_core.outputs.lb_listener_arn
   project_prefix = var.project_prefix
   path_pattern = ["/template*"] // TODO: replace with list of relevant service path pattern
+  priority = 100 // TODO: must be unique for across all services
   tags = local.tags
   vpc_id = data.terraform_remote_state.core.outputs.vpc_id
 }
