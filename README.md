@@ -12,6 +12,9 @@ for production, staging and dev environments correspondingly.
 The application itself can be written in any language. Only requirement is that it must provide http/ rest endpoints.
 Application code may be located in the `app` or `src` folder. The Dockerfile should always be place at the root of the repository.
 
+> All items within the `terraform/main.tf` file and `terraform/variables.tf`  marked "`//TODO`" should be amended to match the new project prior to pushing to a deployment branch (dev, staging, production).
+
+
 ## Terraform
 
 The provided terraform template will
@@ -29,16 +32,19 @@ Relevant endpoints and secrets to access those services are available as environ
 
 The Forest Watcher Application Load Balancer can be linked to multiple services.
 Each service must have a unique path pattern. Path patterns for a given service must be specified in the 
-lb_listener_rule module inside the terraform template
+lb_listener_rule inputs inside the fargate_autoscaling in the terraform template.
+The value of `health_check_path` must match a path_pattern. 
 
 An example for a path patterns is
 
-`path_pattern = ["/v1/forms*", "/v1/questionnaire*]`
+`path_pattern = ["/v1/fw_forms/healthcheck", "/v1/forms*", "/v1/questionnaire*]`
 
-This will route all requests which start with `/v1/forms` or `/v1/questionnaire` to the current service.
+This will route all requests which start with `/v1/forms` or `/v1/questionnaire` to the current service, as well as the specific path `/v1/fw_forms/healthcheck`.
+The health_check_path specifies which route the load balancer will perform health checks on. This path must return a HTTP `200` or `202` status code to inform the load balancer the service is healthy. Any other code will be treat the service as unhealthy.
+- For the dev and staging environments, each application's routes will also need to be added to the API gateway to be successfully routed once deployed.
 
 The Fargate service is currently configure to run with 0.25 cVPU and 512 MB of RAM. Autoscaling is enabled.
-To change configurations, you can update default values for all environments in `/terraform/variables.tf`.0
+To change configurations, you can update default values for all environments in `/terraform/variables.tf`.
 To change configurations for different environments separately, override default values in `/terraform/vars/terraform-{env}.tfvars`.
 
 ## Databases
@@ -70,7 +76,7 @@ The branches
 - staging
 - dev
 
-represent infrastructure deployment in the according environment accounts on AWS. 
+Represent infrastructure deployment in the according environment accounts on AWS. 
 Github actions workflows will apply infrastructure changes to these environments automatically, 
 when ever a commit is pushed to one of the branches.
 
