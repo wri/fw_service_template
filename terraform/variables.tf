@@ -1,6 +1,6 @@
 variable "project_prefix" {
   type = string
-  default = "fw-template"  # TODO: update with project name
+  default = "fw-template"  // TODO: update with project name
 }
 
 variable "environment" {
@@ -52,4 +52,11 @@ variable "auto_scaling_min_capacity" {
 
 variable "git_sha" {
   type = string
+}
+
+variable "healthcheck_path" {
+  type = string
+}
+variable "healthcheck_sns_emails" {
+  type    = list(string)
 }
