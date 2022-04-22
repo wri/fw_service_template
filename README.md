@@ -12,7 +12,7 @@ for production, staging and dev environments correspondingly.
 The application itself can be written in any language. Only requirement is that it must provide http/ rest endpoints.
 Application code may be located in the `app` or `src` folder. The Dockerfile should always be place at the root of the repository.
 
-> All items within the `terraform/main.tf` file and `terraform/variables.tf`  marked "`//TODO`" should be amended to match the new project prior to pushing to a deployment branch (dev, staging, production).
+> All items marked "`// TODO`" should be amended to match the new project prior to pushing to a deployment branch (dev, staging, production). Amend these in `main.tf`, `variables.tf` and the `terraform-{env}.tfvars` file for each environment.
 
 
 ## Terraform
